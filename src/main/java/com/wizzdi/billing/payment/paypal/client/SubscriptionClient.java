@@ -16,9 +16,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.DefaultUriBuilderFactory;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 import static com.wizzdi.billing.payment.paypal.client.LoggingInterceptor.LOGGER;
 
@@ -124,6 +122,19 @@ public class SubscriptionClient {
         return restTemplate.getForEntity(builder.toUriString(), PlansResponse.class);
 
     }
+
+    public ResponseEntity<Subscription> getSubscription(String subscriptionId) {
+
+        Map<String, Object> uriVariables = new HashMap<>();
+        uriVariables.put("id", subscriptionId);
+        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(url+"/v1/billing/subscriptions/{id}")
+                .uriVariables(uriVariables);
+
+
+        return restTemplate.getForEntity(builder.toUriString(), Subscription.class);
+
+    }
+
 
     public ResponseEntity<Product> createProduct(String requestId, ProductCreate productCreate) {
         HttpHeaders httpHeaders = new HttpHeaders();

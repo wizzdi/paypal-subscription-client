@@ -34,6 +34,7 @@ class SubscriptionClientTest {
     private SubscriptionClient subscriptionClient;
     private String planId;
     private String productId;
+    private String subscriptionId;
 
     @Value("${paypal.clientId}")
     private String paypalClientId;
@@ -41,6 +42,7 @@ class SubscriptionClientTest {
     private String secret;
     @Value("${paypal.test.shopper.email}")
     private String shopperEmail;
+
 
     @BeforeAll
     void setUp() throws IOException, PayPalLoginException {
@@ -154,6 +156,23 @@ class SubscriptionClientTest {
             subscriptionCreate.setPlanId(planId);
             subscriptionCreate.setStartTime(OffsetDateTime.now());
             ResponseEntity<Subscription> subscriptionClientSubscription = subscriptionClient.createSubscription(requestId, subscriptionCreate);
+            Assertions.assertTrue(subscriptionClientSubscription.getStatusCode().is2xxSuccessful());
+            Subscription subscription = subscriptionClientSubscription.getBody();
+            Assertions.assertNotNull(subscription);
+            logger.info(subscription + "");
+            subscriptionId=subscription.getId();
+        } catch (HttpClientErrorException e) {
+            String responseBodyAsString = e.getResponseBodyAsString();
+            Assertions.fail(responseBodyAsString);
+
+        }
+    }
+
+    @Order(6)
+    @Test
+    void getSubscription() {
+        try {
+            ResponseEntity<Subscription> subscriptionClientSubscription = subscriptionClient.getSubscription(this.subscriptionId);
             Assertions.assertTrue(subscriptionClientSubscription.getStatusCode().is2xxSuccessful());
             Subscription subscription = subscriptionClientSubscription.getBody();
             Assertions.assertNotNull(subscription);

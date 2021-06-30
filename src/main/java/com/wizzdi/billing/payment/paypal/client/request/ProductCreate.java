@@ -23,6 +23,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 public class ProductCreate {
 
+    private String id;
     @JsonProperty("name")
     private String name;
     @JsonProperty("description")
@@ -108,4 +109,13 @@ public class ProductCreate {
         this.additionalProperties.put(name, value);
     }
 
+
+    public String getId() {
+        return id;
+    }
+
+    public <T extends ProductCreate> T setId(String id) {
+        this.id = id;
+        return (T) this;
+    }
 }

@@ -2,7 +2,9 @@
 package com.wizzdi.billing.payment.paypal.client.response;
 
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.Generated;
 
@@ -37,8 +39,8 @@ public class Subscription {
     private String status;
     @JsonProperty("status_update_time")
     @JsonFormat(shape = JsonFormat.Shape.STRING)
-
     private OffsetDateTime statusUpdateTime;
+    private List<Link> links=new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
@@ -122,4 +124,12 @@ public class Subscription {
         this.additionalProperties.put(name, value);
     }
 
+    public List<Link> getLinks() {
+        return links;
+    }
+
+    public <T extends Subscription> T setLinks(List<Link> links) {
+        this.links = links;
+        return (T) this;
+    }
 }
